@@ -1,0 +1,8 @@
+_scratch.html
+
+# IDE stuff
+*.sublime-project
+*.sublime-workspace
+.vscode/settings.json
+*.un~
+*.swp
