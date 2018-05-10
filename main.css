@@ -7,7 +7,15 @@ hr {
   margin-bottom: 1rem;
 }
 
-#html2canvas-content {
+#container {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+path.highlighted {
+  fill: #e33ecc;
+}
+
+.transparent {
+  opacity: 0.6;
 }
