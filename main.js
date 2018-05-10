@@ -5,7 +5,20 @@
     // Rules from external stylesheets must be placed inline
     // for all SVGs because html2canvas does not read
     // external CSS of SVG elements.
-    window.inlineStyles("svg g path.highlighted.hexagon.transparent");
+
+    // Strategy 1:
+    // Search for both rules and elements that match the following
+    // expression, then inline the rules into the elements.
+    // window.inlineStyles('svg g path.highlighted.hexagon.transparent');
+
+    // Strategy 2:
+    // Get an element's computed style and inline everything.
+    // Unlike #1, this captures the final output of our browser's CSS engine;
+    // it ought to be an exact inline match.
+    var elements = document.querySelectorAll("svg g path");
+    elements.forEach(function(element) {
+      window.inlineComputedStyle(element);
+    });
 
     var content = document.querySelector("#container");
     html2canvas(content).then(canvas => {
@@ -13,8 +26,23 @@
     });
   };
 
-  window.inlineStyles = function(selectorText) {
+  window.inlineComputedStyle = function(element, options) {
+    if (!options) {
+      options = {};
+    }
+    var computedStyle = window.getComputedStyle(element);
+    for (var i = 0; i < computedStyle.length; i++) {
+      var property = computedStyle.item(i);
+      var match =
+        !options.properties || options.properties.indexOf(property) >= 0;
+      if (match) {
+        var value = computedStyle.getPropertyValue(property);
+        element.style[property] = value;
+      }
+    }
+  };
 
+  window.inlineStyles = function(selectorText) {
     var getRules = function(styleSheet) {
       var rules = Array.from(styleSheet.cssRules);
       return rules;
