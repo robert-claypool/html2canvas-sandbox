@@ -20,10 +20,36 @@
       window.inlineComputedStyle(element);
     });
 
-    var content = document.querySelector("#container");
-    html2canvas(content).then(canvas => {
-      document.body.appendChild(canvas);
+    // Now force SVG images to use base64 data URIs.
+    var elements = document.querySelectorAll("svg image");
+    elements.forEach(function(element) {
+      // Attaching the element to global scope is an ugly hack.
+      window.svgImageRef = element;
+      fetch(element.href.baseVal)
+        .then(response => {
+          return response.blob();
+        })
+        .then(response => {
+          var reader = new FileReader();
+          reader.readAsDataURL(response);
+          reader.addEventListener(
+            "load",
+            function() {
+              var uri = reader.result;
+              window.svgImageRef.href.baseVal = uri;
+            },
+            false
+          );
+        });
     });
+
+    // This setTimeout is an ugly hack.
+    setTimeout(function() {
+      var content = document.querySelector("#container");
+      html2canvas(content).then(canvas => {
+        document.body.appendChild(canvas);
+      });
+    }, 200);
   };
 
   window.inlineComputedStyle = function(element, options) {
