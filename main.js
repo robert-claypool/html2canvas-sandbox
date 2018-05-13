@@ -2,54 +2,63 @@
 
 (function() {
   window.convertToImage = function() {
-    // Rules from external stylesheets must be placed inline
-    // for all SVGs because html2canvas does not read
-    // external CSS of SVG elements.
+    var content = document.querySelector("#container");
+    html2canvas(content, {
+      // removeCanvas: false,
+      onclone: function(doc) {
+        return new Promise(function(resolve) {
+          // Rules from external stylesheets must be placed inline
+          // for all SVGs because html2canvas does not read
+          // external CSS of SVG elements.
 
-    // Strategy 1:
-    // Search for both rules and elements that match the following
-    // expression, then inline the rules into the elements.
-    // window.inlineStyles('svg g path.highlighted.hexagon.transparent');
+          // Strategy 1:
+          // Search for both rules and elements that match the following
+          // expression, then inline the rules into the elements.
+          // window.inlineStyles('svg g path.highlighted.hexagon.transparent');
 
-    // Strategy 2:
-    // Get an element's computed style and inline everything.
-    // Unlike #1, this captures the final output of our browser's CSS engine;
-    // it ought to be an exact inline match.
-    var elements = document.querySelectorAll("svg g path");
-    elements.forEach(function(element) {
-      window.inlineComputedStyle(element);
-    });
+          // Strategy 2:
+          // Get an element's computed style and inline everything.
+          // Unlike #1, this captures the final output of our browser's CSS engine;
+          // it ought to be an exact inline match.
+          var elements = doc.querySelectorAll("svg g path");
+          elements.forEach(function(element) {
+            window.inlineComputedStyle(element);
+          });
 
-    // Now force SVG images to use base64 data URIs.
-    var elements = document.querySelectorAll("svg image");
-    elements.forEach(function(element) {
-      // Attaching the element to global scope is an ugly hack.
-      window.svgImageRef = element;
-      fetch(element.href.baseVal)
-        .then(response => {
-          return response.blob();
-        })
-        .then(response => {
-          var reader = new FileReader();
-          reader.readAsDataURL(response);
-          reader.addEventListener(
-            "load",
-            function() {
-              var uri = reader.result;
-              window.svgImageRef.href.baseVal = uri;
-            },
-            false
-          );
+          // Now force SVG images to use base64 data URIs.
+          var elements = doc.querySelectorAll("svg image");
+          var count = 0;
+          elements.forEach(function(element) {
+            fetch(element.href.baseVal)
+              .then(function(response) {
+                return response.blob();
+              })
+              .then(
+                function(response) {
+                  var reader = new FileReader();
+                  reader.readAsDataURL(response); // read as base64
+                  reader.addEventListener(
+                    "load",
+                    function() {
+                      // Set the element's value to our base64 encoded URI.
+                      var uri = reader.result;
+                      this.href.baseVal = uri;
+                      // Resolve only if all elements have been updated.
+                      count++;
+                      if (count === elements.length) {
+                        resolve();
+                      }
+                    }.bind(this), // bind "this" to the element
+                    false
+                  );
+                }.bind(element)
+              );
+          });
         });
+      }
+    }).then(canvas => {
+      document.body.appendChild(canvas);
     });
-
-    // This setTimeout is an ugly hack.
-    setTimeout(function() {
-      var content = document.querySelector("#container");
-      html2canvas(content).then(canvas => {
-        document.body.appendChild(canvas);
-      });
-    }, 200);
   };
 
   window.inlineComputedStyle = function(element, options) {
