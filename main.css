@@ -14,14 +14,6 @@ hr {
   display: block;
 }
 
-path.highlighted {
-  fill: #56ffe3;
-}
-
-.transparent {
-  opacity: 0.6;
-}
-
 @font-face {
   font-family: "Font Awesome 5 Free";
   font-style: normal;

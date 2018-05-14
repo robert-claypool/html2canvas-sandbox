@@ -6,57 +6,16 @@
     <title>html2canvas Sandbox</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Place favicon.ico in the root directory -->
-    <!-- <link rel="stylesheet" href="normalize.css"> -->
     <link rel="stylesheet" href="main.css">
   </head>
   <body>
-    <!--[if lte IE 9]>
-    <p class="browserupgrade">
-      You are using an <strong>outdated</strong> browser.
-      Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.
-    </p>
-    <![endif]-->
-
     <div id="container">
-      <p>This is an SVG with class attribute + filter, image, and style tags:</p>
       <svg>
-        <g hexagon-shadow="#cluster77568drop-shadow" class="scoreGap2 inScope currentPerforming futureLeading strategic" id="77568"
-          style="filter: url(&quot;#drop-shadow&quot;);">
-          <g transform="">
-            <!-- These CSS classes will be inlined via JavaScript, see main.js -->
-            <path class="highlighted transparent hexagon" d="M208.61377018922195,35.000000000000014C225.66364532622808,64.53125,225.66364532622808,55.46875000000002,208.61377018922192,85.00000000000001S199.41225027401228,110,165.3125,110S139.0611049477842,114.53124999999999,122.01122981077806,85S104.96135467377194,64.53125000000001,122.01122981077808,35.00000000000002S131.21274972598772,10.000000000000032,165.3125,10.000000000000028S191.56389505221583,5.468750000000021,208.61377018922195,35.000000000000014"></path>
-            <text>
-              <tspan x="125" y="66" class="smile">&#xf118;</tspan>
-            </text>
-          </g>
-          <defs>
-            <filter id="drop-shadow" height="150%" width="150%">
-              <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"></feGaussianBlur>
-              <feOffset in="blur" dy="10" dx="-5" result="offsetBlur"></feOffset>
-              <feComponentTransfer>
-                <feFuncA type="linear" slope="0.4"></feFuncA>
-              </feComponentTransfer>
-              <feMerge>
-                <feMergeNode></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-              </feMerge>
-            </filter>
-          </defs>
-        </g>
-        <!-- These images will be converted to base64 data URIs, see main.js -->
-        <image width="24" height="24" class="cursor marker" href="/star.png" x="153" y="18"></image>
-        <image width="24" height="24" class="cursor marker" href="/star.png" x="153" y="46"></image>
-        <image width="24" height="24" class="cursor marker" href="/star.png" x="153" y="75"></image>
-        <style type="text/css">
-          /*
-           * Style rules for font-family work if placed here.
-           * The same rule, if placed in main.css, will not be picked up during conversion.
-           */
-          svg .smile {
-            font-family: 'Font Awesome 5 Free';
-          }
-        </style>
+        <text>
+          <tspan x="15" y="25" style="font-family: 'Font Awesome 5 Free'">
+            &#xf118; Smile!
+          </tspan>
+        </text>
       </svg>
     </div>
 
@@ -68,4 +27,3 @@
     <script src="main.js"></script>
   </body>
 </html>
-
